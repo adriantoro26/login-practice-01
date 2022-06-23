@@ -77,14 +77,35 @@ const Login = (props) => {
   const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
     value: "",
     isValid: null,
-  });
+  },);
+
+  useEffect(() => {
+    /**
+     * Check input after timeout is set
+     */
+    console.log("Validate");
+    const timer = setTimeout(() => {
+      setFormIsValid(
+        emailState.isValid && passwordState.isValid
+      );
+    }, 500);
+
+    return () => {
+      /**
+       * Reset timer when inputs changes:
+       *
+       * This will be called before the next useEffect.
+       * But not for the first useEffect.
+       */
+      clearTimeout(timer);
+    };
+  }, [emailState.isValid, passwordState.isValid]);
 
   const emailChangeHandler = (event) => {
     dispatchEmail({
       type: "USER_INPUT",
       value: event.target.value,
     });
-    setFormIsValid(event.target.value.includes("@") && passwordState.isValid);
   };
 
   const passwordChangeHandler = (event) => {
@@ -92,8 +113,6 @@ const Login = (props) => {
       type: "USER_INPUT",
       value: event.target.value,
     });
-
-    setFormIsValid(emailState.isValid && event.target.value.trim().length > 6);
   };
 
   const validateEmailHandler = () => {
