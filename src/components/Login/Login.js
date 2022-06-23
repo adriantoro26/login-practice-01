@@ -12,9 +12,24 @@ const Login = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
-    setFormIsValid(
-      enteredEmail.includes("@") && enteredPassword.trim().length > 6
-    );
+    /**
+     * Check input after timeout is set
+     */
+    const timer = setTimeout(() => {
+      setFormIsValid(
+        enteredEmail.includes("@") && enteredPassword.trim().length > 6
+      );
+    }, 500);
+
+    return () => {
+      /**
+       * Reset timer when inputs changes:
+       *
+       * This will be called before the next useEffect.
+       * But not for the first useEffect.
+       */
+      clearTimeout(timer);
+    };
   }, [enteredEmail, enteredPassword]);
 
   const emailChangeHandler = (event) => {
