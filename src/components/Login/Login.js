@@ -77,17 +77,14 @@ const Login = (props) => {
   const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
     value: "",
     isValid: null,
-  },);
+  });
 
   useEffect(() => {
     /**
      * Check input after timeout is set
      */
-    console.log("Validate");
     const timer = setTimeout(() => {
-      setFormIsValid(
-        emailState.isValid && passwordState.isValid
-      );
+      setFormIsValid(emailState.isValid && passwordState.isValid);
     }, 500);
 
     return () => {
